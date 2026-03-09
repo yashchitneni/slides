@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dear Kid Books — Introduction</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&display=swap');
+
+  body {
+    background-color: #020617;
+    color: #f8fafc;
+    font-family: 'Satoshi', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  .cabinet { font-family: 'Cabinet Grotesk', sans-serif; }
+
+  .slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideEnter {
+    from { opacity: 0; transform: scale(1.05) translateY(30px); filter: blur(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  }
+  @keyframes slideExit {
+    from { opacity: 1; transform: scale(1); filter: blur(0); }
+    to { opacity: 0; transform: scale(0.95) translateY(-20px); filter: blur(10px); }
+  }
+
+  .slide.entering { animation: slideEnter 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .slide.exiting { animation: slideExit 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  .slide.entering > * {
+    opacity: 0;
+    animation: childEnter 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .slide.entering > *:nth-child(1) { animation-delay: 150ms; }
+  .slide.entering > *:nth-child(2) { animation-delay: 300ms; }
+  .slide.entering > *:nth-child(3) { animation-delay: 450ms; }
+  .slide.entering > *:nth-child(4) { animation-delay: 550ms; }
+  .slide.entering > *:nth-child(5) { animation-delay: 650ms; }
+
+  @keyframes childEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Progressive reveal steps */
+  .step {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .step.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Photo placeholder */
+  .photo-slot {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.08) 100%);
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .photo-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1.5rem;
+  }
+  .photo-slot .placeholder-text {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .text-gradient-warm { background: linear-gradient(to right, #f59e0b, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-purple { background: linear-gradient(to right, #a78bfa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-blue { background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+</style>
+</head>
+<body>
+
+<div class="relative w-full h-full flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-amber-500/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/20 blur-[120px] rounded-full"></div>
+  </div>
+
+  <main class="relative z-10 w-full h-full max-w-7xl mx-auto px-4">
+
+    <!-- SLIDE 1: Hook — big statement, you talk over it -->
+    <div class="slide active" id="s1">
+      <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]">A CHILDREN'S BOOK<br>FOR <span class="text-gradient-warm">$8.99.</span></h1>
+      <p class="mt-8 text-3xl text-slate-400 font-medium tracking-tight">Personalized. AI-generated. Instant.</p>
+    </div>
+
+    <!-- SLIDE 2: The Problem — sparse, you explain the pain -->
+    <div class="slide" id="s2">
+      <h2 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]">RIGHT NOW THEY COST<br><span class="text-rose-500">$35-50.</span></h2>
+      <p class="mt-8 text-3xl text-slate-500 font-medium">7-14 days. And they're just templates.</p>
+    </div>
+
+    <!-- SLIDE 3: The Solution — product photo slot + brand reveal -->
+    <div class="slide" id="s3">
+      <div class="flex flex-col md:flex-row items-center gap-16 max-w-5xl">
+        <!-- DROP YOUR PRODUCT PHOTO HERE: a real book, a kid holding it, the cover art -->
+        <div class="photo-slot w-[400px] h-[400px] flex-shrink-0">
+          <!-- Replace this div with: <img src="your-book-photo.jpg" alt="Dear Kid Books"> -->
+          <div class="placeholder-text">Drop product photo here<br>(book cover, kid reading, printed copy)</div>
+        </div>
+        <div class="text-left">
+          <div class="uppercase tracking-[0.2em] text-sm text-amber-500 font-bold mb-4">Introducing</div>
+          <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]"><span class="text-gradient-warm">DEAR KID</span><br>BOOKS</h1>
+          <p class="mt-6 text-2xl text-slate-400 font-medium max-w-lg">Your child is the hero. Every book is one of one.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: How It Works — PROGRESSIVE REVEAL, one step per keypress -->
+    <div class="slide" id="s4" data-steps="3">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-16">HOW IT <span class="text-gradient-blue">WORKS.</span></h2>
+      <div class="flex flex-col md:flex-row items-start gap-6 max-w-5xl">
+        <div class="step flex-1 text-center" data-step="1">
+          <div class="bg-white/5 border border-white/10 p-8 rounded-2xl">
+            <div class="cabinet text-6xl font-black text-amber-400 mb-4">1</div>
+            <h3 class="text-2xl font-bold mb-3">Tell us about your kid</h3>
+            <p class="text-slate-400">Name, age, what they love, pick a theme</p>
+          </div>
+        </div>
+        <iconify-icon icon="lucide:chevron-right" class="step text-slate-700 text-3xl hidden md:block mt-16" data-step="2"></iconify-icon>
+        <div class="step flex-1 text-center" data-step="2">
+          <div class="bg-white/5 border border-white/10 p-8 rounded-2xl">
+            <div class="cabinet text-6xl font-black text-violet-400 mb-4">2</div>
+            <h3 class="text-2xl font-bold mb-3">AI builds the book</h3>
+            <p class="text-slate-400">Story + illustrations generated in 60-90 seconds</p>
+          </div>
+        </div>
+        <iconify-icon icon="lucide:chevron-right" class="step text-slate-700 text-3xl hidden md:block mt-16" data-step="3"></iconify-icon>
+        <div class="step flex-1 text-center" data-step="3">
+          <div class="bg-white/5 border border-white/10 p-8 rounded-2xl">
+            <div class="cabinet text-6xl font-black text-emerald-400 mb-4">3</div>
+            <h3 class="text-2xl font-bold mb-3">Preview, pay, download</h3>
+            <p class="text-slate-400">Full book preview. $8.99. Instant PDF delivery.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: The Product — photo slot + clean specs -->
+    <div class="slide" id="s5">
+      <div class="flex flex-col md:flex-row items-center gap-16 max-w-5xl">
+        <div class="text-left flex-1">
+          <div class="space-y-10">
+            <div>
+              <div class="text-sm uppercase tracking-widest text-amber-500 font-bold mb-3">Digital — $8.99</div>
+              <p class="text-2xl text-slate-300 font-medium">24 pages. Fully illustrated. Instant download.</p>
+            </div>
+            <div class="h-px w-full bg-white/10"></div>
+            <div>
+              <div class="text-sm uppercase tracking-widest text-violet-400 font-bold mb-3">Hardcover — $39.99</div>
+              <p class="text-2xl text-slate-300 font-medium">8.5" square. Print-on-demand. Gift-ready.</p>
+            </div>
+          </div>
+        </div>
+        <!-- DROP YOUR PRODUCT PHOTO HERE: open book spread, physical copy, side-by-side digital + print -->
+        <div class="photo-slot w-[400px] h-[500px] flex-shrink-0">
+          <!-- Replace with: <img src="your-product-spread.jpg" alt="Book spread"> -->
+          <div class="placeholder-text">Drop photo here<br>(open book spread, digital + print side by side)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: The Numbers — centered, balanced layout -->
+    <div class="slide" id="s6">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-16">THE <span class="text-emerald-400">MARGINS.</span></h2>
+      <div class="w-full max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center justify-items-center">
+          <div class="text-center w-full">
+            <div class="cabinet text-[12vw] md:text-[10vw] font-black leading-none text-emerald-400">86%</div>
+            <p class="mt-4 text-2xl text-slate-400 font-medium">digital</p>
+          </div>
+          <div class="text-center w-full">
+            <div class="cabinet text-[12vw] md:text-[10vw] font-black leading-none text-emerald-400">55%</div>
+            <p class="mt-4 text-2xl text-slate-400 font-medium">hardcover</p>
+          </div>
+        </div>
+      </div>
+      <p class="mt-16 text-3xl text-slate-500">Break-even: <span class="text-white font-bold">7 books a month.</span></p>
+    </div>
+
+    <!-- SLIDE 7: vs Competition — PROGRESSIVE REVEAL, rows appear one at a time -->
+    <div class="slide" id="s7" data-steps="4">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-12">WHY THIS <span class="text-gradient-warm">WINS.</span></h2>
+      <div class="w-full max-w-3xl space-y-5">
+        <div class="step grid grid-cols-3 gap-4 items-center bg-white/5 border border-white/10 p-6 rounded-xl" data-step="1">
+          <span class="text-xl font-bold text-slate-400">Price</span>
+          <span class="text-2xl font-bold text-rose-500 text-center">$35-50</span>
+          <span class="text-2xl font-bold text-emerald-400 text-center">$8.99</span>
+        </div>
+        <div class="step grid grid-cols-3 gap-4 items-center bg-white/5 border border-white/10 p-6 rounded-xl" data-step="2">
+          <span class="text-xl font-bold text-slate-400">Speed</span>
+          <span class="text-2xl font-bold text-rose-500 text-center">7-14 days</span>
+          <span class="text-2xl font-bold text-emerald-400 text-center">90 seconds</span>
+        </div>
+        <div class="step grid grid-cols-3 gap-4 items-center bg-white/5 border border-white/10 p-6 rounded-xl" data-step="3">
+          <span class="text-xl font-bold text-slate-400">Unique</span>
+          <span class="text-2xl font-bold text-rose-500 text-center">Templates</span>
+          <span class="text-2xl font-bold text-emerald-400 text-center">1 of 1</span>
+        </div>
+        <div class="step grid grid-cols-3 gap-4 items-center bg-white/5 border border-white/10 p-6 rounded-xl" data-step="4">
+          <span class="text-xl font-bold text-slate-400">Catalog</span>
+          <span class="text-2xl font-bold text-rose-500 text-center">20-30 titles</span>
+          <span class="text-2xl font-bold text-emerald-400 text-center">Infinite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: The Agent — PROGRESSIVE REVEAL, each automation step appears -->
+    <div class="slide" id="s8" data-steps="4">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-6">THE REAL <span class="text-gradient-purple">GOAL.</span></h2>
+      <p class="text-3xl text-slate-500 font-medium mb-12">A business that runs itself.</p>
+      <div class="w-full max-w-3xl space-y-4">
+        <div class="step flex items-center gap-6 bg-white/5 border border-violet-500/20 p-6 rounded-2xl" data-step="1">
+          <div class="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+            <iconify-icon icon="lucide:shopping-cart" class="text-xl text-violet-400"></iconify-icon>
+          </div>
+          <span class="text-xl text-left"><span class="font-bold text-white">Order in</span> <span class="text-slate-400">— generates story + art + PDF</span></span>
+        </div>
+        <div class="step flex items-center gap-6 bg-white/5 border border-violet-500/20 p-6 rounded-2xl" data-step="2">
+          <div class="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+            <iconify-icon icon="lucide:credit-card" class="text-xl text-violet-400"></iconify-icon>
+          </div>
+          <span class="text-xl text-left"><span class="font-bold text-white">Payment</span> <span class="text-slate-400">— delivers PDF + triggers print</span></span>
+        </div>
+        <div class="step flex items-center gap-6 bg-white/5 border border-violet-500/20 p-6 rounded-2xl" data-step="3">
+          <div class="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+            <iconify-icon icon="lucide:mail" class="text-xl text-violet-400"></iconify-icon>
+          </div>
+          <span class="text-xl text-left"><span class="font-bold text-white">Day 3</span> <span class="text-slate-400">— sends upsell email</span></span>
+        </div>
+        <div class="step flex items-center gap-6 bg-white/5 border border-violet-500/20 p-6 rounded-2xl" data-step="4">
+          <div class="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+            <iconify-icon icon="lucide:message-circle" class="text-xl text-violet-400"></iconify-icon>
+          </div>
+          <span class="text-xl text-left"><span class="font-bold text-white">Support</span> <span class="text-slate-400">— handles questions + refunds</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: The Punchline — just text, you deliver this one -->
+    <div class="slide" id="s9">
+      <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-none">
+        ORDER TO DOORSTEP.<br><span class="text-gradient-purple">ZERO HUMANS.</span>
+      </h1>
+    </div>
+
+    <!-- SLIDE 10: The Roadmap — PROGRESSIVE REVEAL -->
+    <div class="slide" id="s10" data-steps="3">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-16">
+        <span class="text-gradient-warm">THE ROADMAP.</span>
+      </h2>
+      <div class="flex flex-col md:flex-row items-start gap-8 max-w-5xl">
+        <div class="step flex-1" data-step="1">
+          <div class="border-t-4 border-amber-500 pt-8">
+            <div class="text-sm uppercase tracking-widest text-amber-500 font-bold mb-3">Now</div>
+            <h3 class="text-2xl font-bold mb-2">Ship the MVP</h3>
+            <p class="text-slate-400">Digital only. 4-6 themes. Learn what parents actually want.</p>
+          </div>
+        </div>
+        <div class="step flex-1" data-step="2">
+          <div class="border-t-4 border-violet-500 pt-8">
+            <div class="text-sm uppercase tracking-widest text-violet-400 font-bold mb-3">Phase 2</div>
+            <h3 class="text-2xl font-bold mb-2">Subscription</h3>
+            <p class="text-slate-400">"Dear Kid Books Club" — $7.99/mo. New book every month, automatically.</p>
+          </div>
+        </div>
+        <div class="step flex-1" data-step="3">
+          <div class="border-t-4 border-emerald-500 pt-8">
+            <div class="text-sm uppercase tracking-widest text-emerald-400 font-bold mb-3">Phase 3</div>
+            <h3 class="text-2xl font-bold mb-2">Platform</h3>
+            <p class="text-slate-400">Educator accounts. API. White-label. The agent runs everything.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: Close — you talk, slide is minimal -->
+    <div class="slide" id="s11">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-8">
+        <span class="text-gradient-warm">ONE PERSON.<br>ONE AGENT.<br>ONE BUSINESS.</span>
+      </h2>
+      <p class="text-3xl text-slate-500 font-medium mt-4">dearkidbooks.com</p>
+    </div>
+
+  </main>
+
+  <!-- UI HUD -->
+  <div class="fixed bottom-0 left-0 w-full h-1 bg-white/10 z-50">
+    <div class="h-full bg-amber-500 transition-all duration-300" id="progress"></div>
+  </div>
+
+  <div class="fixed bottom-8 right-8 z-50 flex items-center gap-6">
+    <div class="text-slate-600 font-black cabinet tracking-widest text-sm" id="counter">1 / 11</div>
+    <div class="flex gap-2">
+      <button onclick="advance(-1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+        <iconify-icon icon="lucide:chevron-left" class="text-xl"></iconify-icon>
+      </button>
+      <button onclick="advance(1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+        <iconify-icon icon="lucide:chevron-right" class="text-xl"></iconify-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+  let animating = false;
+
+  // Track which step each progressive-reveal slide is on
+  const stepState = {};
+  let autoRevealTimer = null;
+  const STEP_DELAY = 2000; // ms between auto-revealed steps
+
+  function getMaxSteps(slideEl) {
+    return parseInt(slideEl.dataset.steps || '0', 10);
+  }
+
+  function getCurrentStep(slideIndex) {
+    return stepState[slideIndex] || 0;
+  }
+
+  function revealStep(slideEl, stepNum) {
+    const els = slideEl.querySelectorAll(`[data-step="${stepNum}"]`);
+    els.forEach(el => el.classList.add('visible'));
+  }
+
+  function clearAutoReveal() {
+    if (autoRevealTimer) {
+      clearInterval(autoRevealTimer);
+      autoRevealTimer = null;
+    }
+  }
+
+  function startAutoReveal(slideEl, slideIndex) {
+    clearAutoReveal();
+    const maxSteps = getMaxSteps(slideEl);
+    if (maxSteps === 0) return;
+
+    // Reveal first step immediately after slide entrance
+    setTimeout(() => {
+      stepState[slideIndex] = 1;
+      revealStep(slideEl, 1);
+
+      // Then auto-reveal the rest on a timer
+      if (maxSteps > 1) {
+        autoRevealTimer = setInterval(() => {
+          const cur = getCurrentStep(slideIndex);
+          if (cur >= maxSteps) { clearAutoReveal(); return; }
+          const next = cur + 1;
+          stepState[slideIndex] = next;
+          revealStep(slideEl, next);
+          if (next >= maxSteps) clearAutoReveal();
+        }, STEP_DELAY);
+      }
+    }, 800);
+  }
+
+  function resetSteps(slideEl, slideIndex) {
+    clearAutoReveal();
+    slideEl.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    stepState[slideIndex] = 0;
+  }
+
+  function showSlide(n) {
+    if (n < 0 || n >= total || animating) return;
+    animating = true;
+
+    const prev = slides[current];
+    const next = slides[n];
+
+    prev.classList.remove('active');
+    prev.classList.add('exiting');
+    resetSteps(prev, current);
+
+    setTimeout(() => {
+      prev.classList.remove('exiting');
+      current = n;
+      next.classList.add('active', 'entering');
+      updateHUD();
+
+      setTimeout(() => {
+        next.classList.remove('entering');
+        animating = false;
+        // Start auto-revealing steps after the slide has fully entered
+        startAutoReveal(next, n);
+      }, 1100);
+    }, 400);
+  }
+
+  function advance(dir) {
+    if (animating) return;
+    // Arrow key always moves to next/prev slide now
+    if (dir > 0) showSlide(current + 1);
+    else showSlide(current - 1);
+  }
+
+  function updateHUD() {
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); advance(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+    if (e.clientX > window.innerWidth / 2) advance(1);
+    else advance(-1);
+  });
+
+  updateHUD();
+  slides[0].classList.add('entering');
+  setTimeout(() => slides[0].classList.remove('entering'), 1100);
+</script>
+</body>
+</html>

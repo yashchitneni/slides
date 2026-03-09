@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slides</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif; background: #0a0a0a; color: #e0e0e0; padding: 2rem; min-height: 100vh; }
+h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; color: #fff; }
+.project { margin-bottom: 2rem; }
+.project-name { font-size: 1.1rem; font-weight: 500; color: #888; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; }
+.slides { display: flex; flex-direction: column; gap: 0.5rem; }
+a { color: #60a5fa; text-decoration: none; padding: 0.5rem 0; display: block; }
+a:hover { color: #93c5fd; }
+</style>
+</head>
+<body>
+<h1>Slides</h1>
+<div id="content"></div>
+<script>
+const slides = {
+  "Blood Work Optimization": [
+    { url: "blood-work-optimization/video-1-biological-age.html", title: "Video 1 Biological Age" },
+    { url: "blood-work-optimization/video-2-in-range-lie.html", title: "Video 2 In Range Lie" },
+    { url: "blood-work-optimization/video-3-the-plan.html", title: "Video 3 The Plan" },
+  ],
+  "Launch Dear Kid Books Mvp": [
+    { url: "launch-dear-kid-books-mvp/dear-kid-books-intro.html", title: "Dear Kid Books Intro" },
+  ],
+};
+const content = document.getElementById('content');
+Object.entries(slides).forEach(([project, decks]) => {
+  if (decks.length === 0) return;
+  const div = document.createElement('div');
+  div.className = 'project';
+  div.innerHTML = `<div class="project-name">${project}</div><div class="slides">${decks.map(d => `<a href="${d.url}">${d.title}</a>`).join('')}</div>`;
+  content.appendChild(div);
+});
+</script>
+</body>
+</html>

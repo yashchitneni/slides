@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video 2 — In Range Lie</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+  }
+  .slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    width: 100%;
+    height: 100%;
+    animation: fadeIn 0.3s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideEnter {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes slideExit {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(-16px) scale(0.98); }
+  }
+  .slide.entering {
+    display: flex;
+    animation: slideEnter 420ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  .slide.exiting {
+    display: flex;
+    animation: slideExit 280ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  .slide.entering > * {
+    opacity: 0;
+    animation: childEnter 380ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+  .slide.entering > *:nth-child(1) { animation-delay: 80ms; }
+  .slide.entering > *:nth-child(2) { animation-delay: 160ms; }
+  .slide.entering > *:nth-child(3) { animation-delay: 240ms; }
+  .slide.entering > *:nth-child(4) { animation-delay: 300ms; }
+  .slide.entering > *:nth-child(5) { animation-delay: 360ms; }
+
+  @keyframes childEnter {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide.entering, .slide.exiting { animation: none; }
+    .slide.entering > * { animation: none; opacity: 1; }
+  }
+  h1 {
+    font-size: 4.5vw;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    max-width: 85%;
+  }
+  h2 {
+    font-size: 3.5vw;
+    font-weight: 800;
+    line-height: 1.3;
+    max-width: 85%;
+  }
+  h3 {
+    font-size: 2.5vw;
+    font-weight: 700;
+    line-height: 1.3;
+    max-width: 85%;
+  }
+  .subtitle {
+    font-size: 2vw;
+    color: #888;
+    margin-top: 20px;
+    font-weight: 400;
+    max-width: 75%;
+  }
+  .accent { color: #ff4444; }
+  .accent-green { color: #44ff88; }
+  .accent-yellow { color: #ffcc44; }
+  .accent-blue { color: #4488ff; }
+  .dim { color: #555; }
+  .number-big {
+    font-size: 10vw;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .number-medium {
+    font-size: 6vw;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .label {
+    font-size: 1.8vw;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 10px;
+  }
+  .range-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin: 16px 0;
+    font-size: 2.2vw;
+    font-weight: 700;
+  }
+  .range-label {
+    width: 280px;
+    text-align: right;
+    font-size: 2vw;
+  }
+  .range-value {
+    width: 300px;
+    text-align: left;
+  }
+  .range-verdict {
+    width: 200px;
+    text-align: left;
+    font-size: 1.8vw;
+  }
+  .bar-container {
+    width: 60vw;
+    margin: 20px auto;
+    position: relative;
+  }
+  .bar {
+    height: 30px;
+    border-radius: 15px;
+    position: relative;
+    overflow: visible;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 15px;
+  }
+  .bar-marker {
+    position: absolute;
+    top: -10px;
+    width: 4px;
+    height: 50px;
+    background: #fff;
+    border-radius: 2px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 6px;
+    font-size: 1.8vw;
+    font-weight: 700;
+    margin: 8px;
+  }
+  .tag-green { background: rgba(68, 255, 136, 0.15); color: #44ff88; }
+  .tag-red { background: rgba(255, 68, 68, 0.15); color: #ff4444; }
+  .tag-yellow { background: rgba(255, 204, 68, 0.15); color: #ffcc44; }
+  .progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #ff4444;
+    transition: width 0.3s ease;
+  }
+  .slide-counter {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    color: #333;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Hook -->
+<div class="slide active" id="s1">
+  <h1>My testosterone is <span class="accent-yellow">520.</span></h1>
+  <p class="subtitle">I showed it to two different labs.</p>
+  <p class="subtitle">They gave me completely different answers.</p>
+</div>
+
+<!-- SLIDE 2: Function Health -->
+<div class="slide" id="s2">
+  <div class="label">Function Health</div>
+  <div class="number-big accent-green">520</div>
+  <h3 style="margin-top: 20px;"><span class="accent-green">"In range."</span> No concerns.</h3>
+  <p class="subtitle">Their range: 264 – 916 ng/dL</p>
+</div>
+
+<!-- SLIDE 3: Blokes -->
+<div class="slide" id="s3">
+  <div class="label">Blokes Health</div>
+  <div class="number-big accent">520</div>
+  <h3 style="margin-top: 20px;"><span class="accent">"Suboptimal."</span> Needs attention.</h3>
+  <p class="subtitle">Their optimal range: 700 – 1100 ng/dL</p>
+</div>
+
+<!-- SLIDE 4: Same number -->
+<div class="slide" id="s4">
+  <h1>Same blood.<br>Same number.<br><span class="accent">Different answers.</span></h1>
+</div>
+
+<!-- SLIDE 5: Why -->
+<div class="slide" id="s5">
+  <h2>Here's why.</h2>
+  <div style="margin-top: 40px; text-align: left; display: inline-block;">
+    <div class="range-row">
+      <span class="range-label" style="color: #888;">Conventional range</span>
+      <span class="range-value dim">264 – 916</span>
+      <span class="range-verdict accent-green">you: "normal"</span>
+    </div>
+    <div class="range-row">
+      <span class="range-label" style="color: #888;">Optimization range</span>
+      <span class="range-value dim">700 – 1100</span>
+      <span class="range-verdict accent">you: "low"</span>
+    </div>
+    <div class="range-row">
+      <span class="range-label" style="color: #888;">Longevity target</span>
+      <span class="range-value dim">800+</span>
+      <span class="range-verdict accent">you: "fix this"</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Who's in the range -->
+<div class="slide" id="s6">
+  <h1>The "normal" range includes<br><span class="accent">70-year-olds.</span></h1>
+  <p class="subtitle">Sedentary. Overweight. Metabolically unhealthy.<br>If >50% of the population is sick, "normal" is a low bar.</p>
+</div>
+
+<!-- SLIDE 7: Not just T -->
+<div class="slide" id="s7">
+  <h2>It's not just testosterone.</h2>
+  <div style="margin-top: 30px; text-align: left; display: inline-block;">
+    <div class="range-row">
+      <span class="range-label">hs-CRP (inflammation)</span>
+      <span class="range-value"><span class="accent-green">2.1</span> <span class="dim">— "in range"</span></span>
+      <span class="range-verdict accent">optimal: under 1.0</span>
+    </div>
+    <div class="range-row">
+      <span class="range-label">ApoB (heart risk)</span>
+      <span class="range-value"><span class="accent-green">71</span> <span class="dim">— "in range"</span></span>
+      <span class="range-verdict accent">Attia target: under 60</span>
+    </div>
+    <div class="range-row">
+      <span class="range-label">Homocysteine</span>
+      <span class="range-value"><span class="accent-green">9.2</span> <span class="dim">— "in range"</span></span>
+      <span class="range-verdict accent">optimal: under 7.2</span>
+    </div>
+    <div class="range-row">
+      <span class="range-label">Free testosterone</span>
+      <span class="range-value"><span class="accent-green">87.6</span> <span class="dim">— "in range"</span></span>
+      <span class="range-verdict accent">optimal: 150+</span>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: The two questions -->
+<div class="slide" id="s8">
+  <h2>"In range" answers:</h2>
+  <h1 style="margin-top: 15px;"><span class="dim">"Are you sick?"</span></h1>
+  <h2 style="margin-top: 40px;">What you should be asking:</h2>
+  <h1 style="margin-top: 15px;"><span class="accent-green">"Am I optimized?"</span></h1>
+</div>
+
+<!-- SLIDE 9: What to do -->
+<div class="slide" id="s9">
+  <h2>What I wish I knew earlier:</h2>
+  <div style="margin-top: 30px; text-align: left; display: inline-block;">
+    <h3 style="margin: 16px 0;"><span class="accent">1.</span> Ask your lab for <span class="accent">optimal</span> ranges, not just normal.</h3>
+    <h3 style="margin: 16px 0;"><span class="accent">2.</span> Test the <span class="accent">same markers, same lab, same time</span> — track the trend.</h3>
+    <h3 style="margin: 16px 0;"><span class="accent">3.</span> Get an <span class="accent">NMR lipid panel</span> — standard cholesterol misses particle data.</h3>
+    <h3 style="margin: 16px 0;"><span class="accent">4.</span> One test is a snapshot. <span class="accent">Three tests</span> is a trajectory.</h3>
+  </div>
+</div>
+
+<!-- SLIDE 10: CTA -->
+<div class="slide" id="s10">
+  <h2>I built a free resource with every marker,</h2>
+  <h2>what "in range" means vs what <span class="accent-green">optimal</span> means,</h2>
+  <h2>and what to ask your doctor.</h2>
+  <p class="subtitle" style="margin-top: 40px;">Link in bio.</p>
+  <p class="subtitle">Part 3: what I'm actually doing to fix all of this.</p>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+  let animating = false;
+
+  function show(n) {
+    n = Math.max(0, Math.min(n, total - 1));
+    if (n === current || animating) return;
+    animating = true;
+
+    const prev = slides[current];
+    const next = slides[n];
+
+    prev.classList.remove('active');
+    prev.classList.add('exiting');
+
+    prev.addEventListener('animationend', function handler() {
+      prev.removeEventListener('animationend', handler);
+      prev.classList.remove('exiting');
+
+      current = n;
+      next.classList.add('active', 'entering');
+      document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+      document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+
+      next.addEventListener('animationend', function handler2(e) {
+        if (e.target !== next) return;
+        next.removeEventListener('animationend', handler2);
+        next.classList.remove('entering');
+        animating = false;
+      });
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+
+  slides[0].classList.add('entering');
+  slides[0].addEventListener('animationend', function handler(e) {
+    if (e.target !== slides[0]) return;
+    slides[0].removeEventListener('animationend', handler);
+    slides[0].classList.remove('entering');
+  });
+  document.getElementById('progress').style.width = (1 / total * 100) + '%';
+  document.getElementById('counter').textContent = '1 / ' + total;
+</script>
+</body>
+</html>

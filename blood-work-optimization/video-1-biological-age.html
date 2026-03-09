@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video 1 — Biological Age</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&display=swap');
+
+  body {
+    background-color: #020617;
+    color: #f8fafc;
+    font-family: 'Satoshi', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  .cabinet { font-family: 'Cabinet Grotesk', sans-serif; }
+
+  .slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideEnter {
+    from { opacity: 0; transform: scale(1.05) translateY(30px); filter: blur(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  }
+  @keyframes slideExit {
+    from { opacity: 1; transform: scale(1); filter: blur(0); }
+    to { opacity: 0; transform: scale(0.95) translateY(-20px); filter: blur(10px); }
+  }
+
+  .slide.entering { animation: slideEnter 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .slide.exiting { animation: slideExit 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  .slide.entering > * {
+    opacity: 0;
+    animation: childEnter 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .slide.entering > *:nth-child(1) { animation-delay: 150ms; }
+  .slide.entering > *:nth-child(2) { animation-delay: 300ms; }
+  .slide.entering > *:nth-child(3) { animation-delay: 450ms; }
+  .slide.entering > *:nth-child(4) { animation-delay: 550ms; }
+
+  @keyframes childEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Odometer digit containers */
+  .odo-container { display: inline-flex; align-items: center; font-variant-numeric: tabular-nums; }
+  .odo-digit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    width: 0.85em;
+    height: 1.2em;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.8);
+    margin: 0 0.04em;
+  }
+  .odo-digit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(2,6,23,0.7) 0%, transparent 25%, transparent 75%, rgba(2,6,23,0.7) 100%);
+    pointer-events: none;
+    border-radius: 0.5rem;
+    z-index: 10;
+  }
+  .odo-sep { opacity: 0.6; margin: 0 0.05em; }
+
+  /* Rolling digit strip inside .odo-digit */
+  .odo-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .odo-strip span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 1.2em;
+    flex-shrink: 0;
+  }
+
+  .glow-optimal { box-shadow: 0 0 50px -10px rgba(52, 211, 153, 0.2); }
+  .glow-risk { box-shadow: 0 0 50px -10px rgba(244, 63, 94, 0.2); }
+  .text-gradient-red { background: linear-gradient(to right, #f43f5e, #fb7185); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-green { background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+</style>
+</head>
+<body>
+
+<div class="relative w-full h-full flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-rose-500/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-500/20 blur-[120px] rounded-full"></div>
+  </div>
+
+  <main class="relative z-10 w-full h-full max-w-7xl mx-auto px-4">
+    <!-- SLIDE 1: Hook -->
+    <div class="slide active" id="s1">
+      <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]">BIOLOGICAL AGE: <span class="text-emerald-400">27.8</span></h1>
+      <p class="mt-8 text-3xl text-slate-400 font-medium tracking-tight">Here's what Function Health didn't show me.</p>
+    </div>
+
+    <!-- SLIDE 2: The score -->
+    <div class="slide" id="s2">
+      <div class="relative group">
+        <div class="absolute -inset-4 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-[2rem] blur-xl opacity-75 group-hover:opacity-100 transition duration-1000"></div>
+        <img src="function-health-bio-age.png" alt="Function Health Biological Age: 27.8" class="relative max-h-[60vh] rounded-[1.5rem] shadow-2xl border border-white/10">
+      </div>
+      <p class="mt-12 text-4xl font-bold tracking-tight text-slate-200">I almost stopped here.</p>
+    </div>
+
+    <!-- SLIDE 3: The report card -->
+    <div class="slide" id="s3">
+      <h2 class="cabinet text-7xl md:text-9xl font-black tracking-tighter mb-8"><span class="text-emerald-400">92</span> IN RANGE</h2>
+      <p class="text-3xl text-slate-400">Function Health said <span class="text-emerald-400">"on track."</span></p>
+    </div>
+
+    <!-- SLIDE 4: The turn -->
+    <div class="slide" id="s4">
+      <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]">SO I DUG INTO <br>THE <span class="text-rose-500">ACTUAL DATA.</span></h1>
+    </div>
+
+    <!-- SLIDE 5: Testosterone -->
+    <div class="slide" id="s5">
+      <div class="uppercase tracking-[0.2em] text-base text-slate-500 font-bold mb-8">Testosterone — 18 Months</div>
+      <div class="flex flex-col md:flex-row items-center gap-12 md:gap-24 relative">
+        <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-white/5 -translate-y-1/2 z-0"></div>
+
+        <div class="relative z-10 text-center">
+          <div class="odo-container cabinet text-7xl md:text-8xl font-black text-emerald-400 mb-2" data-roll="689" data-roll-delay="0">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          </div>
+          <div class="text-sm uppercase tracking-widest text-slate-500">Sep 2024</div>
+        </div>
+
+        <iconify-icon icon="lucide:arrow-right" class="hidden md:block text-slate-700 text-4xl"></iconify-icon>
+
+        <div class="relative z-10 text-center">
+          <div class="odo-container cabinet text-7xl md:text-8xl font-black text-amber-400 mb-2" data-roll="625" data-roll-delay="200">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          </div>
+          <div class="text-sm uppercase tracking-widest text-slate-500">Jun 2025</div>
+        </div>
+
+        <iconify-icon icon="lucide:arrow-right" class="hidden md:block text-slate-700 text-4xl"></iconify-icon>
+
+        <div class="relative z-10 text-center">
+          <div class="odo-container cabinet text-7xl md:text-8xl font-black text-rose-500 mb-2" data-roll="520" data-roll-delay="400">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          </div>
+          <div class="text-sm uppercase tracking-widest text-slate-500">Feb 2026</div>
+        </div>
+      </div>
+      <div class="mt-16 bg-rose-500/10 border border-rose-500/20 px-8 py-4 rounded-full inline-flex items-center gap-3">
+        <span class="cabinet text-4xl font-black text-rose-500">-24%</span>
+        <span class="text-xl text-slate-300 font-medium">Still "in range."</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Hidden heart risk -->
+    <div class="slide" id="s6">
+      <div class="max-w-4xl text-left space-y-12">
+        <div>
+          <div class="text-base uppercase tracking-widest text-emerald-500 font-bold mb-2">LDL Cholesterol</div>
+          <div class="odo-container cabinet text-8xl md:text-[10rem] font-black tracking-tighter" data-roll="87" data-roll-delay="0">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-sep text-2xl font-bold text-slate-600 ml-4">mg/dL</span>
+          </div>
+        </div>
+        <div class="h-px w-full bg-white/10"></div>
+        <div>
+          <div class="text-base uppercase tracking-widest text-rose-500 font-bold mb-2">LDL Particle Count</div>
+          <div class="odo-container cabinet text-8xl md:text-[10rem] font-black tracking-tighter text-rose-500" data-roll="1267" data-roll-delay="300" data-roll-sep="1">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-sep">,</span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <iconify-icon icon="lucide:trending-up" class="text-5xl translate-y-2 ml-4"></iconify-icon>
+          </div>
+          <p class="mt-6 text-2xl text-slate-400 max-w-2xl leading-relaxed font-medium">
+            <span class="text-white text-3xl">Small, dense, and dangerous.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Inflammation -->
+    <div class="slide" id="s7">
+      <div class="uppercase tracking-[0.2em] text-base text-slate-500 font-bold mb-6">hs-CRP — Inflammation</div>
+      <div class="relative">
+        <div class="absolute -inset-10 bg-rose-500/20 blur-[100px] rounded-full"></div>
+        <div class="odo-container cabinet text-[16vw] font-black leading-none text-rose-500" data-roll="2.1" data-roll-delay="0">
+          <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          <span class="odo-sep">.</span>
+          <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+        </div>
+      </div>
+      <div class="mt-8 space-y-2">
+        <div class="text-3xl font-bold"><span class="text-emerald-400">OPTIMAL: &lt; 1.0</span></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: The system ages -->
+    <div class="slide" id="s8">
+      <h2 class="cabinet text-7xl md:text-9xl font-black tracking-tighter mb-12">THE DASHBOARD <br><span class="text-rose-500">LIED.</span></h2>
+      <div class="w-full max-w-3xl space-y-6">
+        <div class="flex items-center justify-between group">
+          <span class="text-2xl font-bold text-slate-400 group-hover:text-white transition-colors">Liver & Kidneys</span>
+          <div class="flex items-center gap-4">
+             <div class="w-48 h-2 bg-white/5 rounded-full overflow-hidden"><div class="w-1/4 h-full bg-emerald-400"></div></div>
+             <div class="odo-container cabinet text-4xl font-black text-emerald-400" data-roll="25" data-roll-delay="0"><span class="odo-sep">~</span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between group">
+          <span class="text-2xl font-bold text-slate-400 group-hover:text-white transition-colors">Metabolic</span>
+          <div class="flex items-center gap-4">
+             <div class="w-48 h-2 bg-white/5 rounded-full overflow-hidden"><div class="w-1/3 h-full bg-emerald-400"></div></div>
+             <div class="odo-container cabinet text-4xl font-black text-emerald-400" data-roll="28" data-roll-delay="150"><span class="odo-sep">~</span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between group">
+          <span class="text-2xl font-bold text-slate-400 group-hover:text-white transition-colors">Inflammation</span>
+          <div class="flex items-center gap-4">
+             <div class="w-48 h-2 bg-white/5 rounded-full overflow-hidden"><div class="w-[65%] h-full bg-amber-400"></div></div>
+             <div class="odo-container cabinet text-4xl font-black text-amber-400" data-roll="38" data-roll-delay="300"><span class="odo-sep">~</span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between group">
+          <span class="text-2xl font-bold text-slate-400 group-hover:text-white transition-colors">Cardiovascular</span>
+          <div class="flex items-center gap-4">
+             <div class="w-48 h-2 bg-white/5 rounded-full overflow-hidden"><div class="w-[75%] h-full bg-rose-500"></div></div>
+             <div class="odo-container cabinet text-4xl font-black text-rose-500" data-roll="40" data-roll-delay="450"><span class="odo-sep">~</span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between group">
+          <span class="text-2xl font-bold text-slate-400 group-hover:text-white transition-colors">Hormones</span>
+          <div class="flex items-center gap-4">
+             <div class="w-48 h-2 bg-white/5 rounded-full overflow-hidden"><div class="w-[85%] h-full bg-rose-500"></div></div>
+             <div class="odo-container cabinet text-4xl font-black text-rose-500" data-roll="42" data-roll-delay="600"><span class="odo-sep">~</span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: The point -->
+    <div class="slide" id="s9">
+      <div class="space-y-12">
+        <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-none">
+          <span class="text-rose-500">"IN RANGE"</span><br><span class="text-slate-600">= NOT DEAD.</span>
+        </h1>
+        <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-none mt-8">
+          NOT <span class="text-emerald-400">PERFORMING.</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: CTA -->
+    <div class="slide" id="s10">
+      <h2 class="cabinet text-6xl md:text-8xl font-black tracking-tighter mb-8">
+        THEIR RANGES ARE BUILT<br>FROM A <span class="text-rose-500">SICK POPULATION.</span>
+      </h2>
+      <p class="text-3xl text-slate-500 mb-16">50%+ of Americans have chronic disease. That's the benchmark.</p>
+      <div class="p-6 bg-white text-black font-black uppercase tracking-widest rounded-2xl inline-block cursor-pointer hover:scale-105 transition-transform">
+        Up Next: The "In Range" Lie
+      </div>
+    </div>
+  </main>
+
+  <!-- UI HUD -->
+  <div class="fixed bottom-0 left-0 w-full h-1 bg-white/10 z-50">
+    <div class="h-full bg-emerald-500 transition-all duration-300" id="progress"></div>
+  </div>
+
+  <div class="fixed bottom-8 right-8 z-50 flex items-center gap-6">
+    <div class="text-slate-600 font-black cabinet tracking-widest text-sm" id="counter">1 / 10</div>
+    <div class="flex gap-2">
+      <button onclick="show(current - 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+        <iconify-icon icon="lucide:chevron-left" class="text-xl"></iconify-icon>
+      </button>
+      <button onclick="show(current + 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+        <iconify-icon icon="lucide:chevron-right" class="text-xl"></iconify-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- Rolling Counter Engine ---
+  function rollDigits(container) {
+    const value = container.dataset.roll;
+    const delay = parseInt(container.dataset.rollDelay || '0', 10);
+    const digitEls = container.querySelectorAll('.odo-digit');
+    const chars = value.replace(/[^0-9]/g, '');
+
+    let dIdx = 0;
+    for (let i = 0; i < chars.length && dIdx < digitEls.length; i++, dIdx++) {
+      const target = parseInt(chars[i], 10);
+      const digitEl = digitEls[dIdx];
+      const strip = digitEl.querySelector('.odo-strip');
+      if (!strip) continue;
+
+      // Reset immediately
+      strip.style.transition = 'none';
+      strip.style.transform = 'translateY(0)';
+
+      // Use percentage-based transform: each digit is 10% of the strip (10 digits)
+      const pct = target * 10;
+      const ms = delay + (i * 80) + 50;
+
+      setTimeout(() => {
+        strip.style.transition = 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1)';
+        strip.style.transform = `translateY(-${pct}%)`;
+      }, ms);
+    }
+  }
+
+  function resetDigits(container) {
+    container.querySelectorAll('.odo-strip').forEach(s => {
+      s.style.transition = 'none';
+      s.style.transform = 'translateY(0)';
+    });
+  }
+
+  function triggerSlideCounters(slideEl) {
+    slideEl.querySelectorAll('[data-roll]').forEach(c => {
+      resetDigits(c);
+      setTimeout(() => rollDigits(c), 200);
+    });
+  }
+
+  // --- Slide Engine ---
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+  let animating = false;
+
+  function show(n) {
+    if (n < 0 || n >= total || animating) return;
+    animating = true;
+
+    const prev = slides[current];
+    const next = slides[n];
+
+    prev.classList.remove('active');
+    prev.classList.add('exiting');
+
+    setTimeout(() => {
+      prev.classList.remove('exiting');
+      current = n;
+      next.classList.add('active', 'entering');
+      updateHUD();
+      triggerSlideCounters(next);
+
+      setTimeout(() => {
+        next.classList.remove('entering');
+        animating = false;
+      }, 1100);
+    }, 400);
+  }
+
+  function updateHUD() {
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  // Initial state
+  updateHUD();
+  slides[0].classList.add('entering');
+  setTimeout(() => slides[0].classList.remove('entering'), 1100);
+</script>
+</body>
+</html>
