@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Video 2 — AI Found What My Doctor Missed</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 <style>
   @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&display=swap');
 
@@ -153,12 +152,6 @@
       <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]">
         BIOLOGICAL AGE: <span class="text-emerald-400">27.8</span>
       </h1>
-      <p class="mt-10 text-3xl text-slate-400 font-medium tracking-tight">
-        My lab report flagged 8 things. Said the rest was fine.
-      </p>
-      <p class="mt-4 text-3xl font-bold text-white">
-        So I gave everything to AI.
-      </p>
     </div>
 
     <!-- SLIDE 2: The gap -->
@@ -193,15 +186,12 @@
 
         <div class="marker-row" data-step="1">
           <span class="text-xl font-bold text-emerald-400">Function Health: "IN RANGE"</span>
-          <span class="text-xl text-slate-400">264 to 916 ng/dL</span>
+          <span class="text-xl text-slate-400">264 – 916 ng/dL</span>
         </div>
 
         <div class="marker-row flagged" data-step="2">
-          <div>
-            <span class="text-xl font-bold text-rose-400">AI flagged: suboptimal</span>
-            <p class="text-base text-slate-400 mt-1">Optimal is 700 to 800+. That range includes 70-year-olds.</p>
-          </div>
-          <span class="text-3xl ml-6">⚑</span>
+          <span class="text-xl font-bold text-rose-400">AI: suboptimal</span>
+          <span class="text-xl text-slate-400">Target: 700 – 800+</span>
         </div>
       </div>
     </div>
@@ -224,16 +214,13 @@
         <div class="text-2xl font-bold text-slate-300">hs-CRP (Inflammation)</div>
 
         <div class="marker-row flagged" data-step="1">
-          <span class="text-xl font-bold text-rose-400">Function Health flagged this one</span>
-          <span class="text-xl text-slate-400">above their 3.0 cutoff</span>
+          <span class="text-xl font-bold text-rose-400">Function Health: flagged</span>
+          <span class="text-xl text-slate-400">above 3.0 cutoff</span>
         </div>
 
         <div class="marker-row flagged" data-step="2">
-          <div>
-            <span class="text-xl font-bold text-rose-400">AI went deeper: optimal is under 1.0</span>
-            <p class="text-base text-slate-400 mt-1">This is upstream of everything. Testosterone, LDL particles, thyroid. Fix this and half the other markers follow.</p>
-          </div>
-          <span class="text-3xl ml-6">⚑</span>
+          <span class="text-xl font-bold text-rose-400">AI: optimal is under 1.0</span>
+          <span class="text-xl text-slate-400">Target: &lt;1.0</span>
         </div>
       </div>
     </div>
@@ -253,15 +240,12 @@
 
         <div class="marker-row" data-step="1">
           <span class="text-xl font-bold text-emerald-400">Function Health: "IN RANGE"</span>
-          <span class="text-xl text-slate-400">under 100</span>
+          <span class="text-xl text-slate-400">&lt;100 mg/dL</span>
         </div>
 
         <div class="marker-row flagged" data-step="2">
-          <div>
-            <span class="text-xl font-bold text-rose-400">AI flagged: longevity target is under 60</span>
-            <p class="text-base text-slate-400 mt-1">Every 10 mg/dL drop cuts heart disease risk roughly 9%.</p>
-          </div>
-          <span class="text-3xl ml-6">⚑</span>
+          <span class="text-xl font-bold text-rose-400">AI: longevity target is under 60</span>
+          <span class="text-xl text-slate-400">Target: &lt;60</span>
         </div>
       </div>
     </div>
@@ -287,84 +271,47 @@
         </div>
 
         <div class="marker-row flagged" data-step="2">
-          <div>
-            <span class="text-xl font-bold text-rose-400">AI flagged: well below optimal</span>
-            <p class="text-base text-slate-400 mt-1">Optimal is 150+ pg/mL. Free T is what your body actually uses.</p>
-          </div>
-          <span class="text-3xl ml-6">⚑</span>
+          <span class="text-xl font-bold text-rose-400">AI: well below optimal</span>
+          <span class="text-xl text-slate-400">Target: 150+ pg/mL</span>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 7: The Turn — AI didn't just find the problems -->
-    <div class="slide" id="s7">
-      <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-10">
-        IT DIDN'T JUST<br>FIND THE <span class="text-gradient-rose">PROBLEMS.</span>
-      </h1>
-      <h2 class="cabinet text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] text-amber-400">
-        IT BUILT THE FIX.
-      </h2>
-    </div>
-
-    <!-- SLIDE 8: What the AI built -->
-    <div class="slide" id="s8" data-steps="3">
+    <!-- SLIDE 7: What the AI built -->
+    <div class="slide" id="s7" data-steps="3">
       <div class="w-full max-w-3xl text-left space-y-5">
-        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-4">What AI created</div>
+        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-4">The plan</div>
 
         <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="1">
-          <div>
-            <div class="text-xl font-bold text-amber-400">Supplement protocol</div>
-            <p class="text-base text-slate-400 mt-1">Each supplement mapped to a specific marker. No guessing.</p>
-          </div>
-          <iconify-icon icon="lucide:pill" class="text-3xl text-amber-400 ml-4"></iconify-icon>
+          <div class="text-xl font-bold text-amber-400">Supplement protocol</div>
         </div>
 
         <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="2">
-          <div>
-            <div class="text-xl font-bold text-amber-400">Anti-inflammatory meal system</div>
-            <p class="text-base text-slate-400 mt-1">Not a diet. A framework built around my hs-CRP and ApoB targets.</p>
-          </div>
-          <iconify-icon icon="lucide:utensils" class="text-3xl text-amber-400 ml-4"></iconify-icon>
+          <div class="text-xl font-bold text-amber-400">Anti-inflammatory meal system</div>
         </div>
 
         <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="3">
-          <div>
-            <div class="text-xl font-bold text-amber-400">Retest timeline</div>
-            <p class="text-base text-slate-400 mt-1">June for the T panel. September for the full panel. Markers to watch.</p>
-          </div>
-          <iconify-icon icon="lucide:calendar-check" class="text-3xl text-amber-400 ml-4"></iconify-icon>
+          <div class="text-xl font-bold text-amber-400">Retest timeline</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 9: The meta-reveal -->
-    <div class="slide" id="s9">
-      <p class="text-2xl text-slate-500 font-medium uppercase tracking-[0.2em] mb-8">One more thing</p>
+    <!-- SLIDE 8: The meta-reveal -->
+    <div class="slide" id="s8">
       <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9]">
         IT EVEN MADE THE
       </h1>
       <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mt-2">
         SLIDES <span class="text-gradient-emerald">YOU'RE WATCHING.</span>
       </h1>
-      <p class="mt-10 text-2xl text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed">
-        I gave it my labs. It gave me a plan, a protocol, and a presentation.
-        This is what agency looks like now.
-      </p>
     </div>
 
-    <!-- SLIDE 10: CTA -->
-    <div class="slide" id="s10">
+    <!-- SLIDE 9: CTA -->
+    <div class="slide" id="s9">
       <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-6">
         RETEST:<br><span class="text-emerald-400">SEPTEMBER.</span>
       </h1>
-      <p class="text-3xl text-slate-400 font-medium mb-4">
-        I'll share every number. Good or bad.
-      </p>
-      <p class="text-2xl text-slate-500 max-w-xl mx-auto leading-relaxed">
-        Follow along if you want to see whether any of this actually worked.
-      </p>
       <div class="mt-14 inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-black uppercase tracking-widest rounded-2xl text-lg">
-        <iconify-icon icon="lucide:bell" class="text-2xl"></iconify-icon>
         Follow for the results
       </div>
     </div>
@@ -378,7 +325,7 @@
 
   <!-- HUD: counter + nav -->
   <div class="fixed bottom-8 right-8 z-50 flex items-center gap-6">
-    <div class="text-slate-600 font-black cabinet tracking-widest text-sm" id="counter">1 / 10</div>
+    <div class="text-slate-600 font-black cabinet tracking-widest text-sm" id="counter">1 / 9</div>
     <div class="flex gap-2">
       <button onclick="show(current - 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
         <iconify-icon icon="lucide:chevron-left" class="text-xl"></iconify-icon>
