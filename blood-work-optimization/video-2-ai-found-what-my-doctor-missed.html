@@ -336,8 +336,6 @@
     </div>
   </div>
 
-  <!-- Build-step hint -->
-  <div class="fixed bottom-8 left-8 z-50 text-slate-700 text-sm font-medium cabinet tracking-widest" id="step-hint"></div>
 </div>
 
 <script>
@@ -407,20 +405,6 @@
   let animating = false;
   let currentStep = 0;
 
-  function getCurrentSlideStepCount() {
-    const s = slides[current];
-    return parseInt(s.dataset.steps || '0', 10);
-  }
-
-  function updateStepHint() {
-    const total_steps = getCurrentSlideStepCount();
-    const hint = document.getElementById('step-hint');
-    if (total_steps > 0 && currentStep < total_steps) {
-      hint.textContent = `SPACE to reveal (${currentStep}/${total_steps})`;
-    } else {
-      hint.textContent = '';
-    }
-  }
 
   function show(n) {
     if (n < 0 || n >= total || animating) return;
@@ -435,6 +419,7 @@
     setTimeout(() => {
       prev.classList.remove('exiting');
       resetSteps(prev);
+      clearAutoReveal();
       current = n;
       currentStep = 0;
       next.classList.add('active', 'entering');
@@ -444,20 +429,41 @@
       setTimeout(() => {
         next.classList.remove('entering');
         animating = false;
-        updateStepHint();
+        startAutoReveal(next);
       }, 1100);
     }, 400);
   }
 
+  // --- Auto-reveal engine ---
+  let autoRevealTimer = null;
+  const AUTO_FIRST = 800;
+  const AUTO_INTERVAL = 2000;
+
+  function startAutoReveal(slideEl) {
+    clearAutoReveal();
+    const maxSteps = parseInt(slideEl.dataset.steps || '0', 10);
+    if (maxSteps === 0) return;
+
+    setTimeout(() => {
+      currentStep = 1;
+      revealStep(slideEl, 1);
+      if (maxSteps > 1) {
+        autoRevealTimer = setInterval(() => {
+          if (currentStep >= maxSteps) { clearAutoReveal(); return; }
+          currentStep++;
+          revealStep(slideEl, currentStep);
+          if (currentStep >= maxSteps) clearAutoReveal();
+        }, AUTO_INTERVAL);
+      }
+    }, AUTO_FIRST);
+  }
+
+  function clearAutoReveal() {
+    if (autoRevealTimer) { clearInterval(autoRevealTimer); autoRevealTimer = null; }
+  }
+
   function advance() {
-    const maxSteps = getCurrentSlideStepCount();
-    if (maxSteps > 0 && currentStep < maxSteps) {
-      currentStep++;
-      revealStep(slides[current], currentStep);
-      updateStepHint();
-    } else {
-      show(current + 1);
-    }
+    show(current + 1);
   }
 
   function updateHUD() {
@@ -476,7 +482,7 @@
   setTimeout(() => {
     slides[0].classList.remove('entering');
     animating = false;
-    updateStepHint();
+    startAutoReveal(slides[0]);
   }, 1100);
 </script>
 </body>
