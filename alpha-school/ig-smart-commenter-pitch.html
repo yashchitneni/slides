@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Smart Commenter — @futureof_education</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&display=swap');
+
+  body {
+    background-color: #020617;
+    color: #f8fafc;
+    font-family: 'Satoshi', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  .cabinet { font-family: 'Cabinet Grotesk', sans-serif; }
+
+  .slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideEnter {
+    from { opacity: 0; transform: scale(1.05) translateY(30px); filter: blur(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  }
+  @keyframes slideExit {
+    from { opacity: 1; transform: scale(1); filter: blur(0); }
+    to { opacity: 0; transform: scale(0.95) translateY(-20px); filter: blur(10px); }
+  }
+
+  .slide.entering { animation: slideEnter 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .slide.exiting { animation: slideExit 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  .slide.entering > * {
+    opacity: 0;
+    animation: childEnter 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .slide.entering > *:nth-child(1) { animation-delay: 150ms; }
+  .slide.entering > *:nth-child(2) { animation-delay: 300ms; }
+  .slide.entering > *:nth-child(3) { animation-delay: 450ms; }
+  .slide.entering > *:nth-child(4) { animation-delay: 550ms; }
+  .slide.entering > *:nth-child(5) { animation-delay: 650ms; }
+  .slide.entering > *:nth-child(6) { animation-delay: 750ms; }
+
+  @keyframes childEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  [data-step] {
+    opacity: 0;
+    transition: opacity 400ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(16px);
+  }
+  [data-step].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .text-gradient-purple { background: linear-gradient(to right, #8b5cf6, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-amber { background: linear-gradient(to right, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-emerald { background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-rose { background: linear-gradient(to right, #f43f5e, #fb7185); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .marker-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide.entering, .slide.exiting,
+    .slide.entering > *, [data-step] { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="relative w-full h-full flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-500/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-amber-500/20 blur-[120px] rounded-full"></div>
+  </div>
+
+  <main class="relative z-10 w-full h-full max-w-7xl mx-auto px-4">
+
+    <!-- SLIDE 1: The Problem -->
+    <div class="slide active" id="s1">
+      <p class="text-2xl text-slate-500 font-medium uppercase tracking-[0.2em] mb-6">@futureof_education</p>
+      <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9]">
+        1M FOLLOWERS.<br>
+        <span class="text-gradient-rose">NOT ENOUGH TIME<br>TO REPLY.</span>
+      </h1>
+    </div>
+
+    <!-- SLIDE 2: Why It Matters -->
+    <div class="slide" id="s2" data-steps="3">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">WHY REPLIES MATTER.</h2>
+        <div class="marker-row" data-step="1">
+          <span class="text-xl font-bold text-amber-400">Algorithm boost</span>
+          <span class="text-lg text-slate-400">More reach, Explore page, post resurfacing</span>
+        </div>
+        <div class="marker-row" data-step="2">
+          <span class="text-xl font-bold text-amber-400">Community signal</span>
+          <span class="text-lg text-slate-400">Followers see MacKenzie is present</span>
+        </div>
+        <div class="marker-row" data-step="3">
+          <span class="text-xl font-bold text-amber-400">Enrollment pipeline</span>
+          <span class="text-lg text-slate-400">Parents ask questions in comments</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: The Solution (one line) -->
+    <div class="slide" id="s3">
+      <h1 class="cabinet text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
+        AN AI THAT REPLIES<br>
+        <span class="text-gradient-purple">IN YOUR VOICE.</span>
+      </h1>
+      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">Trained on your captions, podcasts, and approved talking points. Uses Instagram's official API.</p>
+    </div>
+
+    <!-- SLIDE 4: How It Works -->
+    <div class="slide" id="s4" data-steps="4">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">HOW IT WORKS.</h2>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="1">
+          <span class="text-xl font-bold text-purple-400">1. Monitors new comments</span>
+          <span class="text-lg text-slate-400">First 3 hours after posting</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="2">
+          <span class="text-xl font-bold text-purple-400">2. Classifies each comment</span>
+          <span class="text-lg text-slate-400">Reply, skip, or flag for you</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="3">
+          <span class="text-xl font-bold text-purple-400">3. Generates a reply</span>
+          <span class="text-lg text-slate-400">Your voice, your knowledge base</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="4">
+          <span class="text-xl font-bold text-purple-400">4. Posts via official API</span>
+          <span class="text-lg text-slate-400">Rate-limited, compliant, deletable</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Safety -->
+    <div class="slide" id="s5" data-steps="4">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">BUILT-IN GUARDRAILS.</h2>
+        <div class="marker-row" data-step="1">
+          <span class="text-xl font-bold text-emerald-400">Never replies about children or sensitive topics</span>
+        </div>
+        <div class="marker-row" data-step="2">
+          <span class="text-xl font-bold text-emerald-400">Flags verified / high-profile accounts for you</span>
+        </div>
+        <div class="marker-row" data-step="3">
+          <span class="text-xl font-bold text-emerald-400">Only uses pre-approved Alpha School facts</span>
+        </div>
+        <div class="marker-row" data-step="4">
+          <span class="text-xl font-bold text-emerald-400">Kill switch via Slack if anything goes wrong</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: The Ask -->
+    <div class="slide" id="s6" data-steps="3">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">WHAT I NEED FROM YOU.</h2>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="1">
+          <span class="text-xl font-bold text-amber-400">1. Authorize the Meta App</span>
+          <span class="text-lg text-slate-400">~5 min, one-time</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="2">
+          <span class="text-xl font-bold text-amber-400">2. Voice session</span>
+          <span class="text-lg text-slate-400">30-60 min, once</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="3">
+          <span class="text-xl font-bold text-amber-400">3. Sign off on messaging rules</span>
+          <span class="text-lg text-slate-400">What the bot can/can't say</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Timeline + Cost -->
+    <div class="slide" id="s7">
+      <div class="flex flex-col md:flex-row items-center gap-16 md:gap-32">
+        <div class="text-center">
+          <div class="text-base uppercase tracking-widest text-purple-500 font-bold mb-4">Build time</div>
+          <div class="cabinet text-[14vw] md:text-[10rem] font-black text-purple-400 leading-none">3</div>
+          <div class="text-2xl text-slate-400 mt-2">days after approval</div>
+        </div>
+        <div class="text-center">
+          <div class="text-base uppercase tracking-widest text-emerald-500 font-bold mb-4">Running cost</div>
+          <div class="cabinet text-[10vw] md:text-[7rem] font-black text-emerald-400 leading-none">~$30</div>
+          <div class="text-2xl text-slate-400 mt-2">per month</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Blocker -->
+    <div class="slide" id="s8">
+      <p class="text-2xl text-slate-500 font-medium uppercase tracking-[0.2em] mb-6">The one blocker</p>
+      <h1 class="cabinet text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
+        META APP REVIEW<br>
+        <span class="text-gradient-amber">TAKES 2-6 WEEKS.</span>
+      </h1>
+      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">The sooner we submit, the sooner this goes live.<br>Everything else builds in parallel.</p>
+    </div>
+
+    <!-- SLIDE 9: CTA -->
+    <div class="slide" id="s9">
+      <h1 class="cabinet text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] mb-4">
+        READY WHEN<br><span class="text-gradient-purple">YOU ARE.</span>
+      </h1>
+      <p class="text-2xl text-slate-400 mt-6 max-w-xl">I'll handle everything. Just need the green light on the Meta App authorization.</p>
+    </div>
+
+  </main>
+
+  <!-- Progress bar -->
+  <div class="fixed bottom-0 left-0 w-full h-1 bg-white/10 z-50">
+    <div class="h-full bg-purple-500 transition-all duration-300" id="progress"></div>
+  </div>
+
+  <!-- HUD -->
+  <div class="fixed bottom-8 right-8 z-50 flex items-center gap-6">
+    <div class="text-slate-600 font-black cabinet tracking-widest text-sm" id="counter">1 / 9</div>
+    <div class="flex gap-2">
+      <button onclick="show(current - 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">&#8592;</button>
+      <button onclick="show(current + 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">&#8594;</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function resetSteps(slideEl) {
+    slideEl.querySelectorAll('[data-step]').forEach(el => el.classList.remove('revealed'));
+  }
+  function revealStep(slideEl, stepNum) {
+    const el = slideEl.querySelector(`[data-step="${stepNum}"]`);
+    if (el) el.classList.add('revealed');
+  }
+
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+  let animating = false;
+  let currentStep = 0;
+
+  function show(n) {
+    if (n < 0 || n >= total || animating) return;
+    animating = true;
+    const prev = slides[current];
+    const next = slides[n];
+    prev.classList.remove('active');
+    prev.classList.add('exiting');
+    setTimeout(() => {
+      prev.classList.remove('exiting');
+      resetSteps(prev);
+      clearAutoReveal();
+      current = n;
+      currentStep = 0;
+      next.classList.add('active', 'entering');
+      updateHUD();
+      setTimeout(() => {
+        next.classList.remove('entering');
+        animating = false;
+        startAutoReveal(next);
+      }, 1100);
+    }, 400);
+  }
+
+  let autoRevealTimer = null;
+  function startAutoReveal(slideEl) {
+    clearAutoReveal();
+    const maxSteps = parseInt(slideEl.dataset.steps || '0', 10);
+    if (maxSteps === 0) return;
+    setTimeout(() => {
+      currentStep = 1;
+      revealStep(slideEl, 1);
+      if (maxSteps > 1) {
+        autoRevealTimer = setInterval(() => {
+          if (currentStep >= maxSteps) { clearAutoReveal(); return; }
+          currentStep++;
+          revealStep(slideEl, currentStep);
+          if (currentStep >= maxSteps) clearAutoReveal();
+        }, 2000);
+      }
+    }, 800);
+  }
+  function clearAutoReveal() {
+    if (autoRevealTimer) { clearInterval(autoRevealTimer); autoRevealTimer = null; }
+  }
+
+  function updateHUD() {
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  updateHUD();
+  slides[0].classList.add('entering');
+  setTimeout(() => { slides[0].classList.remove('entering'); animating = false; startAutoReveal(slides[0]); }, 1100);
+</script>
+</body>
+</html>

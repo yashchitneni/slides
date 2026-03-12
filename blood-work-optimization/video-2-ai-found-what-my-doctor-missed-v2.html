@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video 2 — AI Found What My Doctor Missed</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&display=swap');
+
+  body {
+    background-color: #020617;
+    color: #f8fafc;
+    font-family: 'Satoshi', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: none;
+  }
+
+  .cabinet { font-family: 'Cabinet Grotesk', sans-serif; }
+
+  .slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes slideEnter {
+    from { opacity: 0; transform: scale(1.05) translateY(30px); filter: blur(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  }
+  @keyframes slideExit {
+    from { opacity: 1; transform: scale(1); filter: blur(0); }
+    to { opacity: 0; transform: scale(0.95) translateY(-20px); filter: blur(10px); }
+  }
+
+  .slide.entering { animation: slideEnter 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .slide.exiting { animation: slideExit 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+  .slide.entering > * {
+    opacity: 0;
+    animation: childEnter 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .slide.entering > *:nth-child(1) { animation-delay: 150ms; }
+  .slide.entering > *:nth-child(2) { animation-delay: 300ms; }
+  .slide.entering > *:nth-child(3) { animation-delay: 450ms; }
+  .slide.entering > *:nth-child(4) { animation-delay: 550ms; }
+  .slide.entering > *:nth-child(5) { animation-delay: 650ms; }
+
+  @keyframes childEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  [data-step] {
+    opacity: 0;
+    transition: opacity 400ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(16px);
+  }
+  [data-step].revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .odo-container { display: inline-flex; align-items: center; font-variant-numeric: tabular-nums; }
+  .odo-digit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    width: 0.85em;
+    height: 1.2em;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.8);
+    margin: 0 0.04em;
+  }
+  .odo-digit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(2,6,23,0.7) 0%, transparent 25%, transparent 75%, rgba(2,6,23,0.7) 100%);
+    pointer-events: none;
+    border-radius: 0.5rem;
+    z-index: 10;
+  }
+  .odo-sep { opacity: 0.6; margin: 0 0.05em; }
+
+  .odo-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .odo-strip span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 1.2em;
+    flex-shrink: 0;
+  }
+
+  .glow-rose { box-shadow: 0 0 60px -10px rgba(244, 63, 94, 0.25); }
+  .glow-emerald { box-shadow: 0 0 60px -10px rgba(52, 211, 153, 0.25); }
+  .glow-amber { box-shadow: 0 0 60px -10px rgba(251, 191, 36, 0.25); }
+
+  .text-gradient-rose { background: linear-gradient(to right, #f43f5e, #fb7185); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-emerald { background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-amber { background: linear-gradient(to right, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-purple { background: linear-gradient(to right, #8b5cf6, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .marker-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .marker-row.flagged { border-color: rgba(244, 63, 94, 0.2); background: rgba(244, 63, 94, 0.05); }
+
+  @keyframes pulse-rose {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .pulse-dot { animation: pulse-rose 2s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide.entering, .slide.exiting,
+    .slide.entering > *, [data-step],
+    .odo-strip { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="relative w-full h-full flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-rose-500/20 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-500/20 blur-[120px] rounded-full"></div>
+  </div>
+
+  <main class="relative z-10 w-full h-full max-w-7xl mx-auto px-4">
+
+    <!-- SLIDE 1: Callback from Video 1 -->
+    <div class="slide active" id="s1">
+      <p class="text-2xl text-slate-500 font-medium uppercase tracking-[0.2em] mb-6">From Video 1</p>
+      <h1 class="cabinet text-7xl md:text-9xl font-black tracking-tighter leading-[0.9]">
+        BIOLOGICAL AGE: <span class="text-emerald-400">27.8</span>
+      </h1>
+    </div>
+
+    <!-- SLIDE 2: The gap — 8 vs 17 -->
+    <div class="slide" id="s2">
+      <div class="flex flex-col md:flex-row items-center gap-16 md:gap-32">
+        <div class="text-center">
+          <div class="text-base uppercase tracking-widest text-emerald-500 font-bold mb-4">Function Health flagged</div>
+          <div class="cabinet text-[18vw] md:text-[12rem] font-black text-emerald-400 leading-none">8</div>
+          <div class="text-2xl text-slate-400 mt-2">things out of range</div>
+        </div>
+        <div class="text-center">
+          <div class="text-base uppercase tracking-widest text-rose-500 font-bold mb-4">AI found</div>
+          <div class="cabinet text-[18vw] md:text-[12rem] font-black text-rose-500 leading-none">17</div>
+          <div class="text-2xl text-slate-400 mt-2">that needed attention</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Testosterone -->
+    <div class="slide" id="s3" data-steps="2">
+      <div class="w-full max-w-3xl text-left space-y-6">
+        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-2">Marker 1 of 4</div>
+        <div class="flex items-baseline gap-4 mb-2">
+          <div class="odo-container cabinet text-[14vw] md:text-[9rem] font-black text-slate-200 leading-none" data-roll="520" data-roll-delay="0">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          </div>
+          <span class="text-3xl text-slate-500 font-bold">ng/dL</span>
+        </div>
+        <div class="text-2xl font-bold text-slate-300">Testosterone</div>
+
+        <div class="marker-row" data-step="1">
+          <span class="text-xl font-bold text-emerald-400">Function Health: "IN RANGE"</span>
+          <span class="text-xl text-slate-400">264 – 916 ng/dL</span>
+        </div>
+
+        <div class="marker-row flagged" data-step="2">
+          <span class="text-xl font-bold text-rose-400">AI: suboptimal</span>
+          <span class="text-xl text-slate-400">Target: 700 – 800+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: hs-CRP -->
+    <div class="slide" id="s4" data-steps="2">
+      <div class="w-full max-w-3xl text-left space-y-6">
+        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-2">Marker 2 of 4</div>
+        <div class="flex items-baseline gap-4 mb-2">
+          <div class="relative">
+            <div class="absolute -inset-8 bg-rose-500/15 blur-[60px] rounded-full"></div>
+            <div class="odo-container cabinet text-[14vw] md:text-[9rem] font-black text-rose-500 leading-none relative" data-roll="21" data-roll-delay="0">
+              <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+              <span class="odo-sep">.</span>
+              <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            </div>
+          </div>
+          <span class="text-3xl text-slate-500 font-bold">mg/L</span>
+        </div>
+        <div class="text-2xl font-bold text-slate-300">hs-CRP (Inflammation)</div>
+
+        <div class="marker-row flagged" data-step="1">
+          <span class="text-xl font-bold text-rose-400">Function Health: flagged</span>
+          <span class="text-xl text-slate-400">above 3.0 cutoff</span>
+        </div>
+
+        <div class="marker-row flagged" data-step="2">
+          <span class="text-xl font-bold text-rose-400">AI: optimal is under 1.0</span>
+          <span class="text-xl text-slate-400">Target: &lt;1.0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: ApoB -->
+    <div class="slide" id="s5" data-steps="2">
+      <div class="w-full max-w-3xl text-left space-y-6">
+        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-2">Marker 3 of 4</div>
+        <div class="flex items-baseline gap-4 mb-2">
+          <div class="odo-container cabinet text-[14vw] md:text-[9rem] font-black text-slate-200 leading-none" data-roll="71" data-roll-delay="0">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          </div>
+          <span class="text-3xl text-slate-500 font-bold">mg/dL</span>
+        </div>
+        <div class="text-2xl font-bold text-slate-300">ApoB (Heart Risk)</div>
+
+        <div class="marker-row" data-step="1">
+          <span class="text-xl font-bold text-emerald-400">Function Health: "IN RANGE"</span>
+          <span class="text-xl text-slate-400">&lt;100 mg/dL</span>
+        </div>
+
+        <div class="marker-row flagged" data-step="2">
+          <span class="text-xl font-bold text-rose-400">AI: longevity target is under 60</span>
+          <span class="text-xl text-slate-400">Target: &lt;60</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Free Testosterone -->
+    <div class="slide" id="s6" data-steps="2">
+      <div class="w-full max-w-3xl text-left space-y-6">
+        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-2">Marker 4 of 4</div>
+        <div class="flex items-baseline gap-4 mb-2">
+          <div class="odo-container cabinet text-[12vw] md:text-[7rem] font-black text-slate-200 leading-none" data-roll="876" data-roll-delay="0">
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+            <span class="odo-sep">.</span>
+            <span class="odo-digit"><span class="odo-strip"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span>
+          </div>
+          <span class="text-3xl text-slate-500 font-bold">pg/mL</span>
+        </div>
+        <div class="text-2xl font-bold text-slate-300">Free Testosterone</div>
+
+        <div class="marker-row" data-step="1">
+          <span class="text-xl font-bold text-emerald-400">Function Health: "IN RANGE"</span>
+          <span class="text-xl text-slate-400">no flag raised</span>
+        </div>
+
+        <div class="marker-row flagged" data-step="2">
+          <span class="text-xl font-bold text-rose-400">AI: well below optimal</span>
+          <span class="text-xl text-slate-400">Target: 150+ pg/mL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: What the AI built -->
+    <div class="slide" id="s7" data-steps="3">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <div class="text-base uppercase tracking-widest text-slate-500 font-bold mb-4">The plan</div>
+
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="1">
+          <div class="text-xl font-bold text-purple-400">Supplement protocol</div>
+        </div>
+
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="2">
+          <div class="text-xl font-bold text-purple-400">Anti-inflammatory meal system</div>
+        </div>
+
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="3">
+          <div class="text-xl font-bold text-purple-400">Retest timeline</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Meta-reveal -->
+    <div class="slide" id="s8">
+      <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9]">
+        IT EVEN MADE THE
+      </h1>
+      <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mt-2">
+        SLIDES <span class="text-gradient-purple">YOU'RE WATCHING.</span>
+      </h1>
+    </div>
+
+    <!-- SLIDE 9: CTA -->
+    <div class="slide" id="s9">
+      <h1 class="cabinet text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-6">
+        RETEST:<br><span class="text-emerald-400">SEPTEMBER.</span>
+      </h1>
+      <div class="mt-14 inline-flex items-center gap-3 px-8 py-4 bg-white text-black font-black uppercase tracking-widest rounded-2xl text-lg">
+        Follow for the results
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Progress bar -->
+  <div class="fixed bottom-0 left-0 w-full h-1 bg-white/10 z-50">
+    <div class="h-full bg-rose-500 transition-all duration-300" id="progress"></div>
+  </div>
+
+  <!-- HUD -->
+  <div class="fixed bottom-8 right-8 z-50 flex items-center gap-6">
+    <div class="text-slate-600 font-black cabinet tracking-widest text-sm" id="counter">1 / 9</div>
+    <div class="flex gap-2">
+      <button onclick="show(current - 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">&#8592;</button>
+      <button onclick="show(current + 1)" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">&#8594;</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // --- Rolling Counter Engine ---
+  function rollDigits(container) {
+    const value = container.dataset.roll;
+    const delay = parseInt(container.dataset.rollDelay || '0', 10);
+    const digitEls = container.querySelectorAll('.odo-digit');
+    const chars = value.replace(/[^0-9]/g, '');
+    let dIdx = 0;
+    for (let i = 0; i < chars.length && dIdx < digitEls.length; i++, dIdx++) {
+      const target = parseInt(chars[i], 10);
+      const strip = digitEls[dIdx].querySelector('.odo-strip');
+      if (!strip) continue;
+      strip.style.transition = 'none';
+      strip.style.transform = 'translateY(0)';
+      const pct = target * 10;
+      setTimeout(() => {
+        strip.style.transition = 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1)';
+        strip.style.transform = `translateY(-${pct}%)`;
+      }, delay + (i * 80) + 50);
+    }
+  }
+
+  function resetDigits(container) {
+    container.querySelectorAll('.odo-strip').forEach(s => {
+      s.style.transition = 'none';
+      s.style.transform = 'translateY(0)';
+    });
+  }
+
+  function triggerSlideCounters(slideEl) {
+    slideEl.querySelectorAll('[data-roll]').forEach(c => {
+      resetDigits(c);
+      setTimeout(() => rollDigits(c), 200);
+    });
+  }
+
+  // --- Progressive Reveal Engine ---
+  function resetSteps(slideEl) {
+    slideEl.querySelectorAll('[data-step]').forEach(el => el.classList.remove('revealed'));
+  }
+
+  function revealStep(slideEl, stepNum) {
+    const el = slideEl.querySelector(`[data-step="${stepNum}"]`);
+    if (el) el.classList.add('revealed');
+  }
+
+  // --- Slide Engine ---
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const total = slides.length;
+  let animating = false;
+  let currentStep = 0;
+
+  function show(n) {
+    if (n < 0 || n >= total || animating) return;
+    animating = true;
+    const prev = slides[current];
+    const next = slides[n];
+
+    prev.classList.remove('active');
+    prev.classList.add('exiting');
+
+    setTimeout(() => {
+      prev.classList.remove('exiting');
+      resetSteps(prev);
+      clearAutoReveal();
+      current = n;
+      currentStep = 0;
+      next.classList.add('active', 'entering');
+      updateHUD();
+      triggerSlideCounters(next);
+
+      setTimeout(() => {
+        next.classList.remove('entering');
+        animating = false;
+        startAutoReveal(next);
+      }, 1100);
+    }, 400);
+  }
+
+  // --- Auto-reveal engine ---
+  let autoRevealTimer = null;
+  const AUTO_FIRST = 800;
+  const AUTO_INTERVAL = 2000;
+
+  function startAutoReveal(slideEl) {
+    clearAutoReveal();
+    const maxSteps = parseInt(slideEl.dataset.steps || '0', 10);
+    if (maxSteps === 0) return;
+    setTimeout(() => {
+      currentStep = 1;
+      revealStep(slideEl, 1);
+      if (maxSteps > 1) {
+        autoRevealTimer = setInterval(() => {
+          if (currentStep >= maxSteps) { clearAutoReveal(); return; }
+          currentStep++;
+          revealStep(slideEl, currentStep);
+          if (currentStep >= maxSteps) clearAutoReveal();
+        }, AUTO_INTERVAL);
+      }
+    }, AUTO_FIRST);
+  }
+
+  function clearAutoReveal() {
+    if (autoRevealTimer) { clearInterval(autoRevealTimer); autoRevealTimer = null; }
+  }
+
+  function updateHUD() {
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+  });
+
+  // Initial state
+  updateHUD();
+  slides[0].classList.add('entering');
+  setTimeout(() => {
+    slides[0].classList.remove('entering');
+    animating = false;
+    startAutoReveal(slides[0]);
+  }, 1100);
+</script>
+</body>
+</html>
