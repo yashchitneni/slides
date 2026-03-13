@@ -1,6 +1,6 @@
 ## Meta App Authorization — What You'll Do
 
-This takes about 5 minutes. I'll be on a call with you to walk through it.
+Takes about 5 minutes. I can hop on a call to walk you through it.
 
 **Step 1: Log into Facebook**
 - Go to developers.facebook.com
@@ -15,7 +15,7 @@ This takes about 5 minutes. I'll be on a call with you to walk through it.
 - Select @futureof_education from the list of connected accounts
 - Confirm
 
-That's it. After this, Meta reviews the app (2-6 weeks). I build everything in parallel. Once approved, the bot goes live.
+That's it. After this, Meta reviews the app (2-6 weeks). I build everything in parallel.
 
 **What the app CAN do:**
 - Read comments on your posts

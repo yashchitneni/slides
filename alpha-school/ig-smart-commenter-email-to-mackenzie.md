@@ -1,17 +1,15 @@
-**Subject:** Instagram Smart Commenter — need your sign-off on one thing
+**Subject:** Smart Commenter build plan + one thing I need from you
 
 Hey MacKenzie,
 
-I've been building an AI system that replies to comments on @futureof_education in your voice. It monitors new posts, classifies each comment (reply, skip, or flag for you), and generates responses using your tone and approved talking points. Everything runs through Instagram's official API.
+Took your ask and put together a build plan for the Instagram Smart Commenter. Attached a quick deck walking through how it works, the guardrails, and what's needed.
 
-I've attached a short deck walking through how it works, the guardrails, and what it costs (~$30/month to run).
+The short version: AI monitors comments on @futureof_education, classifies them, and replies in your voice. Trained entirely from your existing content (captions, podcasts, videos, comment history). Uses Instagram's official API, never touches sensitive topics, and has a kill switch. Runs about $30/month.
 
-**The one thing I need from you:** authorize the Meta App so we can get into their review queue. The review takes 2-6 weeks, and everything else builds in parallel. The authorization itself takes about 5 minutes.
+**The one thing I need:** authorize the Meta App so we can get into their review queue. Takes about 5 minutes on your end. The review itself takes 2-6 weeks, and that's the only blocker. Everything else builds in parallel.
 
-Two other small items, whenever you have time:
-- A 30-60 minute voice session so I can train the AI on your voice and talking points
-- Sign off on the messaging rules (what the bot can and can't say)
+I'll also send over a set of messaging rules for your sign-off (what the bot can and can't say).
 
-Happy to walk through the deck together or answer any questions. Just let me know when works.
+Happy to walk through any of it. Let me know when works for the Meta App authorization.
 
 Yash
