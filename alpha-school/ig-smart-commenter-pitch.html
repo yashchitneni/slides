@@ -73,6 +73,7 @@
   .text-gradient-purple { background: linear-gradient(to right, #8b5cf6, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .text-gradient-amber { background: linear-gradient(to right, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .text-gradient-emerald { background: linear-gradient(to right, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .text-gradient-rose { background: linear-gradient(to right, #f43f5e, #fb7185); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
   .marker-row {
     display: flex;
@@ -109,62 +110,72 @@
       </h1>
     </div>
 
-    <!-- SLIDE 2: What It Does -->
-    <div class="slide" id="s2">
-      <h1 class="cabinet text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
-        AI REPLIES TO COMMENTS<br>
-        <span class="text-gradient-purple">IN YOUR VOICE.</span>
-      </h1>
-      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">Trained on your captions, podcasts, videos, and comment history. Uses Instagram's official API.</p>
-    </div>
-
-    <!-- SLIDE 3: How It Works -->
-    <div class="slide" id="s3" data-steps="4">
+    <!-- SLIDE 2: Every comment gets triaged -->
+    <div class="slide" id="s2" data-steps="4">
       <div class="w-full max-w-3xl text-left space-y-5">
-        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">HOW IT WORKS.</h2>
-        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="1">
-          <span class="text-xl font-bold text-purple-400">1. Monitors new comments</span>
-          <span class="text-lg text-slate-400">After each post goes live</span>
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">EVERY COMMENT GETS TRIAGED.</h2>
+        <div class="marker-row" style="border-color: rgba(244,63,94,0.2); background: rgba(244,63,94,0.05);" data-step="1">
+          <span class="text-xl font-bold text-rose-400">Mentions a child or sensitive topic?</span>
+          <span class="text-lg text-slate-400">Hard skip. Always.</span>
         </div>
-        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="2">
-          <span class="text-xl font-bold text-purple-400">2. Classifies each comment</span>
-          <span class="text-lg text-slate-400">Reply, skip, or flag for you</span>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="2">
+          <span class="text-xl font-bold text-amber-400">Verified or high-profile account?</span>
+          <span class="text-lg text-slate-400">Flagged for you. Never auto-reply.</span>
         </div>
         <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="3">
-          <span class="text-xl font-bold text-purple-400">3. Generates a reply</span>
-          <span class="text-lg text-slate-400">Your voice, your knowledge base</span>
+          <span class="text-xl font-bold text-purple-400">Requires an Alpha School fact?</span>
+          <span class="text-lg text-slate-400">Only replies if the fact is pre-approved.</span>
         </div>
-        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="4">
-          <span class="text-xl font-bold text-purple-400">4. Posts via official API</span>
-          <span class="text-lg text-slate-400">Rate-limited, compliant, deletable</span>
+        <div class="marker-row" style="border-color: rgba(16,185,129,0.2); background: rgba(16,185,129,0.05);" data-step="4">
+          <span class="text-xl font-bold text-emerald-400">Relevant to post or Alpha School?</span>
+          <span class="text-lg text-slate-400">Replies in your voice.</span>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 4: Voice Training -->
-    <div class="slide" id="s4">
-      <h1 class="cabinet text-4xl md:text-6xl font-black tracking-tighter leading-[0.9]">
-        VOICE TRAINED FROM<br>
-        <span class="text-gradient-purple">EXISTING CONTENT.</span>
-      </h1>
-      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">Captions, podcast episodes, videos, comment history. No extra sessions needed.</p>
+    <!-- SLIDE 3: Timing matters -->
+    <div class="slide" id="s3" data-steps="3">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">TIMING IS THE ALGORITHM.</h2>
+        <div class="marker-row" style="border-color: rgba(16,185,129,0.2); background: rgba(16,185,129,0.05);" data-step="1">
+          <span class="text-xl font-bold text-emerald-400">First 3 hours</span>
+          <span class="text-lg text-slate-400">Active replies. This is where reach compounds.</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="2">
+          <span class="text-xl font-bold text-amber-400">3 hours to 3 days</span>
+          <span class="text-lg text-slate-400">Only high-value questions. Enrollment, Alpha inquiries.</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(100,116,139,0.2); background: rgba(100,116,139,0.05);" data-step="3">
+          <span class="text-xl font-bold text-slate-400">After 3 days</span>
+          <span class="text-lg text-slate-500">Nothing. Replying to old posts looks unnatural.</span>
+        </div>
+      </div>
     </div>
 
-    <!-- SLIDE 5: Guardrails -->
-    <div class="slide" id="s5" data-steps="4">
+    <!-- SLIDE 4: Voice source -->
+    <div class="slide" id="s4">
+      <h1 class="cabinet text-4xl md:text-6xl font-black tracking-tighter leading-[0.9]">
+        VOICE BUILT FROM<br>
+        <span class="text-gradient-purple">EVERYTHING YOU'VE SAID.</span>
+      </h1>
+      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">Captions, comment replies, podcast transcripts, videos. Webhooks auto-ingest new content so it never goes stale.</p>
+    </div>
+
+    <!-- SLIDE 5: Rollout plan -->
+    <div class="slide" id="s5" data-steps="3">
       <div class="w-full max-w-3xl text-left space-y-5">
-        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">GUARDRAILS.</h2>
-        <div class="marker-row" data-step="1">
-          <span class="text-xl font-bold text-emerald-400">Never replies about children or sensitive topics</span>
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">ROLLOUT, NOT A FLIP SWITCH.</h2>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="1">
+          <span class="text-xl font-bold text-purple-400">Week 1: Slack approval mode</span>
+          <span class="text-lg text-slate-400">Bot drafts, human approves before posting</span>
         </div>
-        <div class="marker-row" data-step="2">
-          <span class="text-xl font-bold text-emerald-400">Flags verified / high-profile accounts for you</span>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="2">
+          <span class="text-xl font-bold text-purple-400">Week 2: Safe categories go auto</span>
+          <span class="text-lg text-slate-400">Sensitive categories stay in approval mode</span>
         </div>
-        <div class="marker-row" data-step="3">
-          <span class="text-xl font-bold text-emerald-400">Only uses pre-approved Alpha School facts</span>
-        </div>
-        <div class="marker-row" data-step="4">
-          <span class="text-xl font-bold text-emerald-400">Kill switch if anything goes wrong</span>
+        <div class="marker-row" style="border-color: rgba(139,92,246,0.2); background: rgba(139,92,246,0.05);" data-step="3">
+          <span class="text-xl font-bold text-purple-400">Week 3+: Full auto, volume ramp</span>
+          <span class="text-lg text-slate-400">Tuned on edit data. Daily Slack digest.</span>
         </div>
       </div>
     </div>
@@ -178,29 +189,29 @@
       </div>
     </div>
 
-    <!-- SLIDE 7: What I Need -->
-    <div class="slide" id="s7" data-steps="2">
-      <div class="w-full max-w-3xl text-left space-y-5">
-        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">WHAT I NEED FROM YOU.</h2>
-        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="1">
-          <span class="text-xl font-bold text-amber-400">1. Authorize the Meta App</span>
-          <span class="text-lg text-slate-400">~5 min, one-time</span>
-        </div>
-        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="2">
-          <span class="text-xl font-bold text-amber-400">2. Sign off on messaging rules</span>
-          <span class="text-lg text-slate-400">What the bot can and can't say</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 8: Blocker -->
-    <div class="slide" id="s8">
+    <!-- SLIDE 7: The Blocker -->
+    <div class="slide" id="s7">
       <p class="text-2xl text-slate-500 font-medium uppercase tracking-[0.2em] mb-6">The one blocker</p>
       <h1 class="cabinet text-5xl md:text-7xl font-black tracking-tighter leading-[0.9]">
         META APP REVIEW<br>
         <span class="text-gradient-amber">TAKES 2-6 WEEKS.</span>
       </h1>
-      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">The sooner we submit, the sooner this goes live.<br>Everything else builds in parallel.</p>
+      <p class="text-2xl text-slate-400 mt-8 max-w-2xl">Likely faster for a verified 1M-follower account.<br>Everything else builds in parallel.</p>
+    </div>
+
+    <!-- SLIDE 8: What I Need -->
+    <div class="slide" id="s8" data-steps="2">
+      <div class="w-full max-w-3xl text-left space-y-5">
+        <h2 class="cabinet text-4xl md:text-5xl font-black tracking-tight mb-8">WHAT I NEED FROM YOU.</h2>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="1">
+          <span class="text-xl font-bold text-amber-400">1. Authorize the Meta App</span>
+          <span class="text-lg text-slate-400">~5 min, one-time, I'll walk you through it</span>
+        </div>
+        <div class="marker-row" style="border-color: rgba(251,191,36,0.2); background: rgba(251,191,36,0.05);" data-step="2">
+          <span class="text-xl font-bold text-amber-400">2. Sign off on messaging rules</span>
+          <span class="text-lg text-slate-400">What the bot can and can't say publicly</span>
+        </div>
+      </div>
     </div>
 
   </main>
